@@ -1,7 +1,0 @@
-*.cbp
-*.cbp.save-failed
-*.layout 
-*.dll 
-*.depend 
-bin/**
-obj/**
