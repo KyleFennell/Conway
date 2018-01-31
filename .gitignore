@@ -1,1 +1,6 @@
-*.cbp *.layout *.dll *.depend bin obj
+*.cbp 
+*.layout 
+*.dll 
+*.depend 
+bin 
+obj
