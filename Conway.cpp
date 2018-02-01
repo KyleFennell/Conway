@@ -27,8 +27,11 @@ Conway::Conway(int w, int h, bool autoFill){
         }
     }
 
-    on = TextureManager::loadTexture("assets/on.png");
-    off = TextureManager::loadTexture("assets/off.png");
+    SDL_Surface* tempSurface = IMG_Load("assets/on.png");
+    on = SDL_CreateTextureFromSurface(Manager::renderer, tempSurface);
+    tempSurface = IMG_Load("assets/off.png");
+    off = SDL_CreateTextureFromSurface(Manager::renderer, tempSurface);
+    SDL_FreeSurface(tempSurface);
 
     src.x = src.y = 0;
     src.w = src.h = 8;
@@ -43,19 +46,21 @@ void Conway::draw(){
         for (int j = 0; j < width; j++){
             dest.x = _texW*j;
             dest.y = _texH*i;
-            std::cout << src.x << "," << src.y << "," << dest.x << "," << dest.y << std::endl;
             switch (board[i][j]){
             case 0:
-                TextureManager::draw(off, src, dest);
+                SDL_RenderCopy(Manager::renderer, off, &src, &dest);
                 break;
             case 1:
-                TextureManager::draw(on, src, dest);
+                SDL_RenderCopy(Manager::renderer, on, &src, &dest);
                 break;
             default:
                 break;
             }
+            std::cout << board[i][j] << " ";
         }
+        std::cout << std::endl;
     }
+    std::cout << std::endl;
 }
 
 void Conway::iterate(){

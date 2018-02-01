@@ -4,12 +4,12 @@
 
 int main(int argc, char** argv){
 
-    Conway* c = new Conway(16, 9, true);
+    Conway* c = new Conway(20, 20, true);
     Manager manager(c);
     manager.init("conway", false);
 
-    const int FPS = 15;
-    const int PAUSEDFPS = 60;
+    const int FPS = 10;
+    const int PAUSEDFPS = 5;
     const int frameDelay = 1000 / FPS;
     const int pausedDelay = 1000 / PAUSEDFPS;
     int activeDelay = pausedDelay;
@@ -21,8 +21,8 @@ int main(int argc, char** argv){
         frameStart = SDL_GetTicks();
 
         SDL_PollEvent(&Manager::event);
-        manager.handleEvents();
 
+        manager.handleEvents();
         manager.update();
         manager.draw();
 

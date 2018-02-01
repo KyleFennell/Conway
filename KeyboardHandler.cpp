@@ -30,7 +30,6 @@ void KeyboardHandler::handleEvents(){
             }
             break;
         default:
-            std::cout << "not space" << &Manager::event << std::endl;
             break;
         }
         keyDown = true;

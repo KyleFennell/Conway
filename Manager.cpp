@@ -1,6 +1,6 @@
 #include "Manager.h"
 
-SDL_Renderer* Manager::renderer = nullptr;
+SDL_Renderer* Manager::renderer;
 SDL_Event Manager::event;
 
 Manager::Manager(Conway* c){
@@ -47,12 +47,17 @@ void Manager::handleEvents(){
 }
 
 void Manager::update(){
-    conway->iterate();
+    if (!paused){
+        conway->iterate();
+    }
 }
 
 void Manager::draw(){
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(Manager::renderer);
     conway->draw();
+    SDL_SetRenderDrawColor(Manager::renderer, 255, 0, 0, 255);
+    SDL_RenderDrawLine(Manager::renderer, 0, 0, 100, 100);
     SDL_RenderPresent(Manager::renderer);
 }
 

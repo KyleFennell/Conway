@@ -28,8 +28,7 @@ private:
 
     SDL_Texture* on;
     SDL_Texture* off;
-    SDL_Rect src;
-    SDL_Rect dest;
+    SDL_Rect src, dest;
 
     int _texW;
     int _texH;
