@@ -2,11 +2,11 @@
 #include "Conway.h"
 #include "Manager.h"
 
-
 int main(int argc, char** argv){
 
-    Manager::init("conway", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Conway::WIDTH, Conway::HEIGHT, false);
-    Conway c = Conway(160, 90, false);
+    Conway* c = new Conway(16, 9, true);
+    Manager manager(c);
+    manager.init("conway", false);
 
     const int FPS = 15;
     const int PAUSEDFPS = 60;
@@ -15,41 +15,24 @@ int main(int argc, char** argv){
     int activeDelay = pausedDelay;
     Uint32 frameStart;
     int frameTime;
-    bool paused = true;
-    bool isRunning = true;
 
     std::cout << "Startup Finished" << std::endl;
-    while(isRunning){
+    while(manager.isRunning()){
         frameStart = SDL_GetTicks();
 
-        SDL_PollEvent(&Conway::event);
-        if (Conway::event.type == SDL_QUIT) {
-            isRunning = false;
-        }
-        if (Conway::event.key.type == SDL_KEYDOWN && Conway::event.key.repeat == 0 && Conway::event.key.keysym.sym == SDLK_SPACE){
-            paused = !paused;
-            if (paused){
-                activeDelay = pausedDelay;
-            }
-            else {
-                activeDelay = frameDelay;
-            }
-            std::cout << "paused: " << paused << std::endl;
-        }
-        if (!paused){
-            c.iterate();
-        }
+        SDL_PollEvent(&Manager::event);
+        manager.handleEvents();
 
-        c.handelEvents();
+        manager.update();
+        manager.draw();
 
-        SDL_RenderClear(Manager::renderer);
-        c.draw();
-        SDL_RenderPresent(Manager::renderer);
+        activeDelay = ((manager.isPaused())? pausedDelay:frameDelay);
         frameTime = SDL_GetTicks()-frameStart;
 
         if (activeDelay > frameTime){
             SDL_Delay(activeDelay-frameTime);
         }
     }
+    manager.clean();
     return 0;
 }

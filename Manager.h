@@ -1,17 +1,37 @@
 #pragma once
-
 #include "SDL.h"
-#include "SDL_image.h"
+#include "Conway.h"
+#include "KeyboardHandler.h"
 #include <iostream>
+
+class KeyboardHandler;
 
 class Manager{
 public:
-    static SDL_Renderer* renderer;
 
-    static void init(const char* title, int x, int y, int width, int height, bool fullscreen);
-    static void draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest);
-    static SDL_Texture* loadTexture(const char* file);
+    Manager(Conway* conway);
+    ~Manager();
+
+    static SDL_Event event;
+    static SDL_Renderer* renderer;
+    static const int WIDTH = 1600;
+    static const int HEIGHT = 900;
+
+    void init(const char* title, bool fullscreen);
+    void handleEvents();
+    void update();
+    void draw();
+    void clean();
+
+    bool isRunning(){ return running; }
+    bool isPaused(){ return paused; }
+    void togglePause(){ paused = !paused; }
+
 
 private:
-    static SDL_Window* window;
+    SDL_Window* window;
+    bool running = false;
+    bool paused = true;
+    Conway* conway;
+    KeyboardHandler* keyboard;
 };

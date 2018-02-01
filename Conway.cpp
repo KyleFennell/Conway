@@ -1,16 +1,19 @@
 #include "Conway.h"
+#include "TextureManager.h"
 #include "Manager.h"
-#include <iostream>
 
 const float PERCENTAGE = 0.3;
-SDL_Event Conway::event;
 
 Conway::Conway(int w, int h, bool autoFill){
 
     height = h;
-    texH = HEIGHT/(height);
     width = w;
-    texW = WIDTH/(width);
+
+    _texH = Manager::HEIGHT/(height);
+    std::cout << Manager::HEIGHT << ","  << height << "," << _texH << std::endl;
+    _texW = Manager::WIDTH/(width);
+    std::cout << Manager::WIDTH << ","  << width << "," << _texW << std::endl;
+
     board = new int*[height];
     for (int i = 0; i < height; i++){
         board[i] = new int[width];
@@ -24,29 +27,29 @@ Conway::Conway(int w, int h, bool autoFill){
         }
     }
 
-    on = Manager::loadTexture("on.png");
-    off = Manager::loadTexture("off.png");
+    on = TextureManager::loadTexture("assets/on.png");
+    off = TextureManager::loadTexture("assets/off.png");
 
     src.x = src.y = 0;
     src.w = src.h = 8;
 
-    dest.w = texW;
-    dest.h = texH;
+    dest.w = _texW;
+    dest.h = _texH;
 }
 
 
 void Conway::draw(){
-    SDL_RenderClear(Manager::renderer);
     for (int i = 0; i < height; i++){
         for (int j = 0; j < width; j++){
-            dest.x = texW*j;
-            dest.y = texH*i;
+            dest.x = _texW*j;
+            dest.y = _texH*i;
+            std::cout << src.x << "," << src.y << "," << dest.x << "," << dest.y << std::endl;
             switch (board[i][j]){
             case 0:
-                Manager::draw(off, src, dest);
+                TextureManager::draw(off, src, dest);
                 break;
             case 1:
-                Manager::draw(on, src, dest);
+                TextureManager::draw(on, src, dest);
                 break;
             default:
                 break;
@@ -75,26 +78,6 @@ void Conway::iterate(){
         }
     }
     board = newBoard;
-}
-
-void Conway::handelEvents(){
-    if (first && Conway::event.type == SDL_MOUSEBUTTONDOWN && Conway::event.button.button == SDL_BUTTON_LEFT){
-        std::cout << Conway::event.button.x << "," << Conway::event.button.y << std::endl;
-        toggleBoard(Conway::event.button.x/texW, Conway::event.button.y/texH);
-        first = false;
-    }
-    else if (!first && Conway::event.type == SDL_MOUSEBUTTONUP){
-        first = true;
-    }
-}
-
-void Conway::toggleBoard(int x, int y){
-    if (board[y][x]){
-        board[y][x] = 0;
-    }
-    else {
-        board[y][x] = 1;
-    }
 }
 
 int Conway::neighbours(int x, int y){
