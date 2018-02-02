@@ -15,7 +15,8 @@ public:
     void draw();
 
     void iterate();
-    void toggleBoard(int x, int y){board[y][x] = !board[y][x];};
+    void toggleBoard(int x, int y){board[y][x] = !board[y][x];}
+    void setBoard(int x, int y){board[y][x] = 1;}
 
 private:
     bool first = true;

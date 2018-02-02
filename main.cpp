@@ -1,15 +1,16 @@
 #include <iostream>
-#include "Conway.h"
 #include "Manager.h"
 
 int main(int argc, char** argv){
 
-    Conway* c = new Conway(20, 20, true);
-    Manager manager(c);
-    manager.init("conway", false);
 
-    const int FPS = 10;
-    const int PAUSEDFPS = 5;
+    Manager manager;
+    manager.init("conway", false);
+    manager.initConway(80, 60, false);
+    manager.readBlueprints();
+
+    const int FPS = 15;
+    const int PAUSEDFPS = 60;
     const int frameDelay = 1000 / FPS;
     const int pausedDelay = 1000 / PAUSEDFPS;
     int activeDelay = pausedDelay;
@@ -20,9 +21,10 @@ int main(int argc, char** argv){
     while(manager.isRunning()){
         frameStart = SDL_GetTicks();
 
-        SDL_PollEvent(&Manager::event);
+        if (SDL_PollEvent(&Manager::event) == 1){
+            manager.handleEvents();
+        }
 
-        manager.handleEvents();
         manager.update();
         manager.draw();
 

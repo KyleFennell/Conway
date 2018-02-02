@@ -1,10 +1,10 @@
 #include "Manager.h"
 
-SDL_Renderer* Manager::renderer;
+SDL_Renderer* Manager::renderer = nullptr;
+SDL_Window* Manager::window = nullptr;
 SDL_Event Manager::event;
 
-Manager::Manager(Conway* c){
-    conway = c;
+Manager::Manager(){
 }
 
 Manager::~Manager(){
@@ -36,7 +36,16 @@ void Manager::init(const char* title, bool fullscreen){
         std::cout << "Init failed..." << std::endl;
     }
 
-    keyboard = new KeyboardHandler(conway, this);
+}
+
+void Manager::initConway(int width, int height, bool autofill){
+    conway = new Conway(width, height, autofill);
+    bpmanager = new BlueprintManager(conway, width, height);
+    keyboard = new KeyboardHandler(conway, this, bpmanager);
+}
+
+void Manager::readBlueprints(){
+
 }
 
 void Manager::handleEvents(){
@@ -53,11 +62,9 @@ void Manager::update(){
 }
 
 void Manager::draw(){
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(Manager::renderer);
     conway->draw();
-    SDL_SetRenderDrawColor(Manager::renderer, 255, 0, 0, 255);
-    SDL_RenderDrawLine(Manager::renderer, 0, 0, 100, 100);
+    bpmanager->draw(Manager::event.button.x/conway->texW(), Manager::event.button.y/conway->texH());
     SDL_RenderPresent(Manager::renderer);
 }
 

@@ -2,6 +2,7 @@
 #include "SDL.h"
 #include "Conway.h"
 #include "KeyboardHandler.h"
+#include "BlueprintManager.h"
 #include <iostream>
 
 class KeyboardHandler;
@@ -9,15 +10,18 @@ class KeyboardHandler;
 class Manager{
 public:
 
-    Manager(Conway* conway);
+    Manager();
     ~Manager();
 
     static SDL_Event event;
     static SDL_Renderer* renderer;
-    static const int WIDTH = 1600;
-    static const int HEIGHT = 900;
+    static const int WIDTH = 800;
+    static const int HEIGHT = 600;
 
     void init(const char* title, bool fullscreen);
+    void initConway(int width, int height, bool autofill);
+    void readBlueprints();
+
     void handleEvents();
     void update();
     void draw();
@@ -29,9 +33,10 @@ public:
 
 
 private:
-    SDL_Window* window;
+    static SDL_Window* window;
     bool running = false;
     bool paused = true;
     Conway* conway;
     KeyboardHandler* keyboard;
+    BlueprintManager* bpmanager;
 };

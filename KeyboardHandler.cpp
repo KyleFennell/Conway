@@ -4,21 +4,29 @@ void KeyboardHandler::handleEvents(){
     switch (Manager::event.type){
     case SDL_MOUSEBUTTONDOWN:
         std::cout << "mouseDown" << std::endl;
-        if (!mouseDown){
-            switch (Manager::event.button.button){
-            case SDL_BUTTON_LEFT:
-                conway->toggleBoard(Manager::event.button.x/conway->texW(), Manager::event.button.y/conway->texH());
-                std::cout << Manager::event.button.x/conway->texW() << "," << Manager::event.button.y/conway->texH() << std::endl;
-                break;
-            default:
-                break;
-            }
+        switch (Manager::event.button.button){
+        case SDL_BUTTON_LEFT:
+            bpmanager->place(Manager::event.button.x, Manager::event.button.y);
+            break;
+        default:
+            break;
         }
-        mouseDown = true;
         break;
     case SDL_MOUSEBUTTONUP:
         std::cout << "mouse up" << std::endl;
-        mouseDown = false;
+        break;
+    case SDL_MOUSEWHEEL:
+        std::cout << "mousewheel" << std::endl;
+        switch(Manager::event.wheel.y){
+        case 1:
+            std::cout << "wheel up" << std::endl;
+            break;
+        case (-1):
+            std::cout << "wheel down" << std::endl;
+            break;
+        default:
+            break;
+        }
         break;
     case SDL_KEYDOWN:
         std::cout << "keydown" << std::endl;
@@ -32,14 +40,9 @@ void KeyboardHandler::handleEvents(){
         default:
             break;
         }
-        keyDown = true;
-        break;
-    case SDL_MOUSEWHEEL:
-        std::cout << "mousewheel" << std::endl;
         break;
     case SDL_KEYUP:
         std::cout << "keyup" << std::endl;
-        keyDown = false;
         break;
     default:
         break;
