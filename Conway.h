@@ -10,13 +10,16 @@ public:
     int texH(){return _texH;}
 
     Conway();
-    Conway(int w, int h, bool autoFill);
+    Conway(int w, int h);
     void init();
     void draw();
 
     void iterate();
     void toggleBoard(int x, int y){board[y][x] = !board[y][x];}
     void setBoard(int x, int y){board[y][x] = 1;}
+
+    void randomFill();
+    void clear();
 
 private:
     bool first = true;

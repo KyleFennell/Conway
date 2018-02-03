@@ -6,7 +6,7 @@ void KeyboardHandler::handleEvents(){
         std::cout << "mouseDown" << std::endl;
         switch (Manager::event.button.button){
         case SDL_BUTTON_LEFT:
-            bpmanager->place(Manager::event.button.x, Manager::event.button.y);
+            bpmanager->place(manager->mouseX, manager->mouseY);
             break;
         default:
             break;
@@ -20,9 +20,11 @@ void KeyboardHandler::handleEvents(){
         switch(Manager::event.wheel.y){
         case 1:
             std::cout << "wheel up" << std::endl;
+            bpmanager->next();
             break;
         case (-1):
             std::cout << "wheel down" << std::endl;
+            bpmanager->prev();
             break;
         default:
             break;
@@ -36,6 +38,24 @@ void KeyboardHandler::handleEvents(){
             if (Manager::event.key.repeat == 0){
                 manager->togglePause();
             }
+            break;
+        case SDLK_q:
+            bpmanager->rotateLeft();
+            break;
+        case SDLK_e:
+            bpmanager->rotateRight();
+            break;
+        case SDLK_w:
+            bpmanager->flipY();
+            break;
+        case SDLK_a:
+            bpmanager->flipX();
+            break;
+        case SDLK_d:
+            conway->randomFill();
+            break;
+        case SDLK_s:
+            conway->clear();
             break;
         default:
             break;

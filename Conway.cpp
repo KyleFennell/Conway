@@ -4,7 +4,7 @@
 
 const float PERCENTAGE = 0.3;
 
-Conway::Conway(int w, int h, bool autoFill){
+Conway::Conway(int w, int h){
 
     height = h;
     width = w;
@@ -16,12 +16,7 @@ Conway::Conway(int w, int h, bool autoFill){
     for (int i = 0; i < height; i++){
         board[i] = new int[width];
         for (int j = 0; j < width; j++){
-            if (autoFill && static_cast <float> (rand()) / static_cast <float> (RAND_MAX) <= PERCENTAGE){
-                board[i][j] = 1;
-            }
-            else{
-                board[i][j] = 0;
-            }
+            board[i][j] = 0;
         }
     }
 
@@ -78,6 +73,27 @@ void Conway::iterate(){
         }
     }
     board = newBoard;
+}
+
+void Conway::randomFill(){
+    for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            if ((float)rand()/(float)RAND_MAX <= PERCENTAGE){
+                board[i][j] = 1;
+            }
+            else{
+                board[i][j] = 0;
+            }
+        }
+    }
+}
+
+void Conway::clear(){
+    for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            board[i][j] = 0;
+        }
+    }
 }
 
 int Conway::neighbours(int x, int y){

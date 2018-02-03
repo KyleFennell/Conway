@@ -8,7 +8,6 @@ Manager::Manager(){
 }
 
 Manager::~Manager(){
-
 }
 
 void Manager::init(const char* title, bool fullscreen){
@@ -38,8 +37,8 @@ void Manager::init(const char* title, bool fullscreen){
 
 }
 
-void Manager::initConway(int width, int height, bool autofill){
-    conway = new Conway(width, height, autofill);
+void Manager::initConway(int width, int height){
+    conway = new Conway(width, height);
     bpmanager = new BlueprintManager(conway, width, height);
     keyboard = new KeyboardHandler(conway, this, bpmanager);
 }
@@ -56,21 +55,27 @@ void Manager::handleEvents(){
 }
 
 void Manager::update(){
+    if (Manager::event.button.x != 0){
+        mouseX = Manager::event.button.x;
+    }
+    if (Manager::event.button.y != 0){
+        mouseY = Manager::event.button.y;
+    }
     if (!paused){
         conway->iterate();
     }
 }
 
 void Manager::draw(){
-    SDL_RenderClear(Manager::renderer);
+    SDL_RenderClear(renderer);
     conway->draw();
-    bpmanager->draw(Manager::event.button.x/conway->texW(), Manager::event.button.y/conway->texH());
-    SDL_RenderPresent(Manager::renderer);
+    bpmanager->draw(mouseX/conway->texW(), mouseY/conway->texH());
+    SDL_RenderPresent(renderer);
 }
 
 void Manager::clean(){
     SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(Manager::renderer);
+    SDL_DestroyRenderer(renderer);
     SDL_Quit();
     std::cout << "SDL Cleaned..." << std::endl;
 }

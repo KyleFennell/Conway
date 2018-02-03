@@ -13,13 +13,16 @@ public:
     Manager();
     ~Manager();
 
+    int mouseX;
+    int mouseY;
+
     static SDL_Event event;
     static SDL_Renderer* renderer;
     static const int WIDTH = 800;
     static const int HEIGHT = 600;
 
     void init(const char* title, bool fullscreen);
-    void initConway(int width, int height, bool autofill);
+    void initConway(int width, int height);
     void readBlueprints();
 
     void handleEvents();

@@ -6,7 +6,7 @@ int main(int argc, char** argv){
 
     Manager manager;
     manager.init("conway", false);
-    manager.initConway(80, 60, false);
+    manager.initConway(80, 60);
     manager.readBlueprints();
 
     const int FPS = 15;
